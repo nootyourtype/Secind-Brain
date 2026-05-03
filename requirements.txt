@@ -17,6 +17,9 @@ markdown
 ollama
 httpx
 
+# Embeddings
+sentence-transformers
+
 # Clipboard & system tray
 pyperclip
 pystray
@@ -25,3 +28,5 @@ Pillow
 # Utilities
 watchdog
 python-dotenv
+rich
+
