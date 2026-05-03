@@ -50,3 +50,6 @@ Open a GitHub Issue with the `enhancement` label and describe:
 ## Questions?
 
 Open an issue — happy to help! 🚀
+
+
+Thank you

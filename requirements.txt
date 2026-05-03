@@ -29,4 +29,3 @@ Pillow
 watchdog
 python-dotenv
 rich
-
