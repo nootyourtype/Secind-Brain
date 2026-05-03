@@ -1,0 +1,54 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-link
+
+# ── Local AI / Vector DB (generated at runtime – never commit) ──────────────
+brain_db/
+
+# ── User notes (private personal files) ────────────────────────────────────
+notes/
+
+# ── Environment / secrets ───────────────────────────────────────────────────
+.env
+.env.*
+*.secret
+
+# ── Node / Web ───────────────────────────────────────────────────────────────
+web/node_modules/
+web/dist/
+web/dist-ssr/
+web/*.local
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS artifacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

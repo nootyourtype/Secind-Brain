@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Second Brain</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-base:      #0d1117;
+    --bg-card:      #161b22;
+    --bg-hover:     #1c2128;
+    --border:       rgba(99, 202, 255, 0.15);
+    --accent:       #63caff;
+    --accent-glow:  rgba(99, 202, 255, 0.20);
+    --text-primary: #e6edf3;
+    --text-muted:   #7d8590;
+    --green:        #3fb950;
+    --yellow:       #d29922;
+    --tag-bg:       rgba(99, 202, 255, 0.10);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 12px;
+  }
+
+  .card {
+    width: 380px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow:
+      0 0 0 1px rgba(99,202,255,0.05),
+      0 8px 32px rgba(0,0,0,0.6),
+      0 0 60px rgba(99,202,255,0.05);
+    overflow: hidden;
+    animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  @keyframes slideIn {
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .card.hiding {
+    animation: slideOut 0.3s ease-in forwards;
+  }
+
+  @keyframes slideOut {
+    to { transform: translateY(30px); opacity: 0; }
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(99,202,255,0.03);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brain-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+    50%       { opacity: 0.5; box-shadow: 0 0 4px var(--accent); }
+  }
+
+  .brand { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; }
+  .tagline { font-size: 10px; color: var(--text-muted); margin-left: 2px; }
+
+  .close-btn {
+    width: 20px; height: 20px;
+    border: none; background: none;
+    color: var(--text-muted);
+    font-size: 16px; line-height: 1;
+    cursor: pointer; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.15s, background 0.15s;
+  }
+  .close-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
+
+  /* ── Query ── */
+  .query-section {
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .query-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .query-text {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-style: italic;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Insight (LLM synthesis) ── */
+  .insight-section {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .insight-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .insight-label .ai-badge {
+    font-size: 9px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .insight-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-primary);
+  }
+
+  /* ── Sources ── */
+  .sources-section { padding: 10px 16px 14px; }
+
+  .sources-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .source-list { display: flex; flex-direction: column; gap: 5px; }
+
+  .source-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-base);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 6px 10px;
+    transition: background 0.15s;
+  }
+
+  .source-item:hover { background: var(--bg-hover); }
+
+  .source-name { font-size: 11px; color: var(--text-primary); font-weight: 500; }
+  .source-type {
+    font-size: 9px;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.05);
+    padding: 1px 6px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .score-bar {
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  .score-track {
+    width: 50px; height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .score-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    min-width: 28px;
+    text-align: right;
+  }
+
+  /* ── Progress bar (auto-dismiss) ── */
+  .progress-bar {
+    height: 2px;
+    background: var(--accent);
+    transform-origin: left;
+    animation: shrink var(--duration, 12s) linear forwards;
+    box-shadow: 0 0 6px var(--accent-glow);
+  }
+
+  @keyframes shrink {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <div class="header">
+    <div class="header-left">
+      <div class="brain-dot"></div>
+      <span class="brand">SECOND BRAIN</span>
+      <span class="tagline">memory surfaced</span>
+    </div>
+    <button class="close-btn" onclick="dismiss()" title="Dismiss">x</button>
+  </div>
+
+  <div class="query-section">
+    <div class="query-label">Your clipboard</div>
+    <div class="query-text" id="query-text">...</div>
+  </div>
+
+  <div class="insight-section" id="insight-section">
+    <div class="insight-label">
+      AI Insight
+      <span class="ai-badge">LOCAL LLM</span>
+    </div>
+    <div class="insight-text" id="insight-text">Analyzing your knowledge base...</div>
+  </div>
+
+  <div class="sources-section">
+    <div class="sources-label">Matched Sources</div>
+    <div class="source-list" id="sources"></div>
+  </div>
+
+  <div class="progress-bar" id="progress" style="--duration: 12s"></div>
+</div>
+
+<script>
+  let dismissTimer;
+
+  function populate(data) {
+    // Query
+    document.getElementById('query-text').textContent = data.query || '';
+
+    // Insight
+    const insightEl = document.getElementById('insight-text');
+    const insightSection = document.getElementById('insight-section');
+    if (data.insight) {
+      insightSection.style.display = '';
+      insightEl.textContent = data.insight;
+    } else {
+      insightSection.style.display = 'none';
+    }
+
+    // Sources
+    const list = document.getElementById('sources');
+    list.innerHTML = '';
+    (data.sources || []).forEach(s => {
+      const score    = s.score || 0;
+      const pct      = Math.round(score * 100);
+      const fillColor = score > 0.7 ? '#3fb950' : score > 0.5 ? '#d29922' : '#7d8590';
+      const ext       = s.source.split('.').pop().toUpperCase();
+
+      list.innerHTML += `
+        <div class="source-item">
+          <span class="source-name">${s.source}</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="score-bar">
+              <div class="score-track">
+                <div class="score-fill" style="width:${pct}%;background:${fillColor}"></div>
+              </div>
+              <span class="score-num">${pct}%</span>
+            </div>
+            <span class="source-type">${ext}</span>
+          </div>
+        </div>`;
+    });
+
+    // Auto-dismiss
+    const dur = data.duration || 12;
+    document.getElementById('progress').style.setProperty('--duration', dur + 's');
+    clearTimeout(dismissTimer);
+    dismissTimer = setTimeout(dismiss, dur * 1000);
+  }
+
+  function dismiss() {
+    const card = document.getElementById('card');
+    card.classList.add('hiding');
+    setTimeout(() => {
+      if (window.pywebview) {
+        window.pywebview.api.close_window();
+      }
+    }, 320);
+  }
+
+  // Called by Python side once window is ready
+  window.addEventListener('pywebviewready', () => {
+    window.pywebview.api.get_data().then(data => populate(JSON.parse(data)));
+  });
+</script>
+</body>
+</html>

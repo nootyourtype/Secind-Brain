@@ -1,0 +1,27 @@
+# Second Brain – Python Backend Dependencies
+# Install with: pip install -r requirements.txt
+
+# API & Web server
+fastapi
+uvicorn[standard]
+
+# Vector database
+chromadb
+
+# File parsing
+pypdf2
+python-docx
+markdown
+
+# AI / LLM
+ollama
+httpx
+
+# Clipboard & system tray
+pyperclip
+pystray
+Pillow
+
+# Utilities
+watchdog
+python-dotenv
